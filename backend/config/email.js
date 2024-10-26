@@ -4,7 +4,7 @@ const { secret } = require('./secret');
 
 // sendEmail
 module.exports.sendEmail = (body, res, message) => {
-  const transporter =`-`.createTransport({
+  const transporter =nodemailer.createTransport({
     host: secret.email_host,
     service: secret.email_service, // comment this line if you use a custom server/domain
     port: secret.email_port,
