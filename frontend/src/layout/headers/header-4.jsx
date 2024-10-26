@@ -14,6 +14,8 @@ import useCartInfo from '@/hooks/use-cart-info';
 import CartMiniSidebar from '@/components/common/cart-mini-sidebar';
 import { openCartMini } from '@/redux/features/cartSlice';
 
+// this is what changes the homepage navbar
+
 const HeaderFour = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isOffCanvasOpen, setIsCanvasOpen] = useState(false);

@@ -14,6 +14,12 @@ import { CartTwo, Compare, Facebook, Menu, PhoneTwo, Wishlist, Search } from '@/
 import useSearchFormSubmit from '@/hooks/use-search-form-submit';
 import OffCanvas from '@/components/common/off-canvas';
 
+
+// it does not change homepage , but it changes all others navbar of register, shop, etc...
+// it is top bar which contains no of followers , language, settings
+// it also contains the navbar, of menu items such as home, products, shop, coupons etc...
+// and has search bar with cart and wishlist, comparewith logo 
+
 const HeaderTwo = ({ style_2 = false }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const [isOffCanvasOpen, setIsCanvasOpen] = useState(false);
