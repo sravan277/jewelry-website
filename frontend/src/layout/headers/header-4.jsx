@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 // internal
 import { CartTwo, Menu, Search, Wishlist } from '@/svg';
@@ -13,6 +14,12 @@ import OffCanvas from '@/components/common/off-canvas';
 import useCartInfo from '@/hooks/use-cart-info';
 import CartMiniSidebar from '@/components/common/cart-mini-sidebar';
 import { openCartMini } from '@/redux/features/cartSlice';
+import { useRouter } from 'next/router';
+
+
+
+
+// this is what changes the homepage navbar
 
 const HeaderFour = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -20,7 +27,13 @@ const HeaderFour = () => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const { quantity } = useCartInfo();
   const { sticky } = useSticky();
+  const router = useRouter();
   const dispatch = useDispatch();
+
+  const handleAccountClick = () => {
+    router.push('/profile'); // Navigate to the profile page
+  };
+
   return (
     <>
       <header>
@@ -58,8 +71,12 @@ const HeaderFour = () => {
                       </Link>
                     </div>
                     <div className="tp-header-action-item d-none d-sm-block">
-                      <button onClick={() => dispatch(openCartMini())} type="button" className="tp-header-action-btn cartmini-open-btn">
-                        <CartTwo />
+                      <button
+                        onClick={handleAccountClick} // Change the click event to navigate to profile
+                        type="button"
+                        className="tp-header-action-btn cartmini-open-btn"
+                      >
+                        <FaUser />
                         <span className="tp-header-action-badge">{quantity}</span>
                       </button>
                     </div>

@@ -2,6 +2,7 @@ require('dotenv').config();
 const nodemailer = require('nodemailer');
 const { secret } = require('./secret');
 
+
 // sendEmail
 module.exports.sendEmail = (body, res, message) => {
   const transporter =nodemailer.createTransport({
