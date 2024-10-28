@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
-// internal
 import Menus from './header-com/menus';
 import logo from '@assets/img/logo/logo.svg';
 import useSticky from '@/hooks/use-sticky';
 import useCartInfo from '@/hooks/use-cart-info';
 import { openCartMini } from '@/redux/features/cartSlice';
-// import HeaderTopRight from './header-com/header-top-right';
 import CartMiniSidebar from '@/components/common/cart-mini-sidebar';
-import { CartTwo, Compare, Facebook, Menu, PhoneTwo, Wishlist, Search } from '@/svg';
+import { CartTwo, Compare, Menu, Wishlist, Search } from '@/svg';
 import useSearchFormSubmit from '@/hooks/use-search-form-submit';
 import OffCanvas from '@/components/common/off-canvas';
+import { useRouter } from 'next/router';
+import { FaUser } from 'react-icons/fa'; // Make sure to import FaUser correctly
 
 const HeaderTwo = ({ style_2 = false }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
@@ -21,35 +21,16 @@ const HeaderTwo = ({ style_2 = false }) => {
   const { quantity } = useCartInfo();
   const { sticky } = useSticky();
   const dispatch = useDispatch();
+  
+  const router = useRouter();
+  const handleAccountClick = () => {
+    router.push('/profile'); // Navigate to the profile page
+  };
+
   return (
     <>
       <header>
         <div className={`tp-header-area tp-header-style-${style_2 ? 'primary' : 'darkRed'} tp-header-height`}>
-          <div className="tp-header-top-2 p-relative z-index-11 tp-header-top-border d-none d-md-block">
-            <div className="container">
-              <div className="row align-items-center">
-                <div className="col-md-6">
-                  <div className="tp-header-info d-flex align-items-center">
-                    <div className="tp-header-info-item">
-                      <a href="#">
-                        <span>
-                          <Facebook />
-                        </span> 7500k Followers
-                      </a>
-                    </div>
-                    <div className="tp-header-info-item">
-                      <a href="tel:402-763-282-46">
-                        <span>
-                          <PhoneTwo />
-                        </span> +(966) 595 035 008
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div id="header-sticky" className={`tp-header-bottom-2 tp-header-sticky ${sticky ? 'header-sticky' : ''}`}>
             <div className="container">
               <div className="tp-mega-menu-wrapper p-relative">
@@ -94,10 +75,14 @@ const HeaderTwo = ({ style_2 = false }) => {
                             <span className="tp-header-action-badge">{wishlist.length}</span>
                           </Link>
                         </div>
-                        <div className="tp-header-action-item">
-                          <button onClick={() => dispatch(openCartMini())} className="tp-header-action-btn cartmini-open-btn" >
-                            <CartTwo />
-                            <span className="tp-header-action-badge">{quantity}</span>
+                        <div className="tp-header-action-item d-none d-sm-block">
+                          <button
+                            onClick={handleAccountClick} // Change the click event to navigate to profile
+                            type="button"
+                            className="tp-header-action-btn cartmini-open-btn"
+                          >
+                            <FaUser />
+                         
                           </button>
                         </div>
                         <div className="tp-header-action-item tp-header-hamburger mr-20 d-xl-none">

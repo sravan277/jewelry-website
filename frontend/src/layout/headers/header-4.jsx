@@ -10,12 +10,23 @@ import useSticky from '@/hooks/use-sticky';
 import SearchBar from './header-com/search-bar';
 import OffCanvas from '@/components/common/off-canvas';
 import useCartInfo from '@/hooks/use-cart-info';
+import { FaUser } from 'react-icons/fa'; // Import FaUser
+import { useRouter } from 'next/router'; // Import useRouter
 
 const HeaderFour = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isOffCanvasOpen, setIsCanvasOpen] = useState(false);
   const { wishlist } = useSelector((state) => state.wishlist);
   const { sticky } = useSticky();
+  const quantity = 0; // Replace this with actual quantity from your state if needed
+
+  const router = useRouter(); // Initialize the router
+
+  // Function to handle account button click
+  const handleAccountClick = () => {
+    router.push('/profile'); // Navigate to the profile page
+  };
+
   return (
     <>
       <header>
@@ -41,23 +52,34 @@ const HeaderFour = () => {
                 <div className="col-xl-2 col-lg-2 col-6">
                   <div className="tp-header-action d-flex align-items-center justify-content-end ml-50">
 
+                    {/* Search Button */}
                     <div className="tp-header-action-item d-none d-sm-block">
                       <button onClick={() => setIsSearchOpen(true)} type="button" className="tp-header-action-btn tp-search-open-btn">
                         <Search />
                       </button>
                     </div>
+
+                    {/* Wishlist Button */}
                     <div className="tp-header-action-item d-none d-sm-block">
                       <Link href="/wishlist" className="tp-header-action-btn">
                         <Wishlist />
                         <span className="tp-header-action-badge">{wishlist.length}</span>
                       </Link>
                     </div>
-                    {/* <div className="tp-header-action-item d-none d-sm-block">
-                      <button onClick={() => dispatch(openCartMini())} type="button" className="tp-header-action-btn cartmini-open-btn">
-                        <CartTwo />
-                        <span className="tp-header-action-badge">{quantity}</span>
+
+                    {/* User Account Button */}
+                    <div className="tp-header-action-item d-none d-sm-block">
+                      <button
+                        onClick={handleAccountClick} // Navigate to profile on click
+                        type="button"
+                        className="tp-header-action-btn cartmini-open-btn"
+                      >
+                        <FaUser />
+                      
                       </button>
-                    </div> */}
+                    </div>
+
+                    {/* Offcanvas Menu Button */}
                     <div className="tp-header-action-item d-lg-none">
                       <button onClick={() => setIsCanvasOpen(true)} type="button" className="tp-offcanvas-open-btn">
                         <Menu />
@@ -71,10 +93,10 @@ const HeaderFour = () => {
         </div>
       </header>
 
-      {/* search bar start */}
+      {/* Search bar start */}
       <SearchBar isSearchOpen={isSearchOpen} setIsSearchOpen={setIsSearchOpen} />
       <OffCanvas isOffCanvasOpen={isOffCanvasOpen} setIsCanvasOpen={setIsCanvasOpen} categoryType="jewelry" />
-      {/* off canvas end */}
+      {/* Off canvas end */}
     </>
   );
 };
