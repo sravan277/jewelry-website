@@ -9,7 +9,6 @@ import logo_dark from '@assets/img/logo/logo.svg';
 import useSticky from '@/hooks/use-sticky';
 import SearchBar from './header-com/search-bar';
 import OffCanvas from '@/components/common/off-canvas';
-import useCartInfo from '@/hooks/use-cart-info';
 import { FaUser } from 'react-icons/fa'; // Import FaUser
 import { useRouter } from 'next/router'; // Import useRouter
 
@@ -24,7 +23,7 @@ const HeaderFour = () => {
 
   // Function to handle account button click
   const handleAccountClick = () => {
-    router.push('/profile'); // Navigate to the profile page
+    router.push('/profile');
   };
 
   return (

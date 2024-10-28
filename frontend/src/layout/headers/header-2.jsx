@@ -6,9 +6,8 @@ import Menus from './header-com/menus';
 import logo from '@assets/img/logo/logo.svg';
 import useSticky from '@/hooks/use-sticky';
 import useCartInfo from '@/hooks/use-cart-info';
-import { openCartMini } from '@/redux/features/cartSlice';
 import CartMiniSidebar from '@/components/common/cart-mini-sidebar';
-import { CartTwo, Compare, Menu, Wishlist, Search } from '@/svg';
+import { Menu, Wishlist, Search } from '@/svg';
 import useSearchFormSubmit from '@/hooks/use-search-form-submit';
 import OffCanvas from '@/components/common/off-canvas';
 import { useRouter } from 'next/router';
@@ -64,11 +63,6 @@ const HeaderTwo = ({ style_2 = false }) => {
                         </form>
                       </div>
                       <div className="tp-header-action d-flex align-items-center ml-30">
-                        <div className="tp-header-action-item d-none d-lg-block">
-                          <Link href="/compare" className="tp-header-action-btn">
-                            <Compare />
-                          </Link>
-                        </div>
                         <div className="tp-header-action-item d-none d-lg-block">
                           <Link href="/wishlist" className="tp-header-action-btn">
                             <Wishlist />

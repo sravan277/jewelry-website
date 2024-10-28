@@ -44,7 +44,7 @@ const NavProfileTab = ({ orderData }) => {
                   <Box />
                 </span>
               </div>
-              <h4 className="profile__main-info-title">Total Order</h4>
+              <h4 className="profile__main-info-title">Total Uploads</h4>
             </div>
           </div>
           <div className="col-md-3 col-sm-6">
@@ -55,20 +55,7 @@ const NavProfileTab = ({ orderData }) => {
                   <Processing />
                 </span>
               </div>
-              <h4 className="profile__main-info-title">Pending Order</h4>
-            </div>
-          </div>
-          <div className="col-md-3 col-sm-6">
-            <div className="profile__main-info-item">
-              <div className="profile__main-info-icon">
-                <span>
-                  <span className="profile-icon-count profile-wishlist">
-                    {orderData?.processing}
-                  </span>
-                  <Truck />
-                </span>
-              </div>
-              <h4 className="profile__main-info-title">Processing Order</h4>
+              <h4 className="profile__main-info-title">Deleted images</h4>
             </div>
           </div>
           <div className="col-md-3 col-sm-6">
@@ -81,7 +68,7 @@ const NavProfileTab = ({ orderData }) => {
                   <DeliveryTwo />
                 </span>
               </div>
-              <h4 className="profile__main-info-title">Complete Order</h4>
+              <h4 className="profile__main-info-title">Generated Img</h4>
             </div>
           </div>
         </div>

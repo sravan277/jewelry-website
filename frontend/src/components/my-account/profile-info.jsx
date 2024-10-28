@@ -86,19 +86,6 @@ const ProfileInfo = () => {
                 </div>
               </div>
             </div>
-
-            <div className="col-xxl-12">
-              <div className="profile__input-box">
-                <div className="profile__input">
-                  <input {...register("address", { required: true })} name='address' type="text" placeholder="Enter your address" defaultValue="3304 Randall Drive" />
-                  <span>
-                    <LocationTwo/>
-                  </span>
-                  <ErrorMsg msg={errors.address?.message} />
-                </div>
-              </div>
-            </div>
-
             <div className="col-xxl-12">
               <div className="profile__input-box">
                 <div className="profile__input">
