@@ -5,8 +5,6 @@ import Link from 'next/link';
 import Menus from './header-com/menus';
 import logo from '@assets/img/logo/logo.svg';
 import useSticky from '@/hooks/use-sticky';
-import useCartInfo from '@/hooks/use-cart-info';
-import CartMiniSidebar from '@/components/common/cart-mini-sidebar';
 import { Menu, Wishlist, Search } from '@/svg';
 import useSearchFormSubmit from '@/hooks/use-search-form-submit';
 import OffCanvas from '@/components/common/off-canvas';
@@ -17,7 +15,6 @@ const HeaderTwo = ({ style_2 = false }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const [isOffCanvasOpen, setIsCanvasOpen] = useState(false);
   const { setSearchText, handleSubmit, searchText } = useSearchFormSubmit();
-  const { quantity } = useCartInfo();
   const { sticky } = useSticky();
   const dispatch = useDispatch();
   
@@ -93,14 +90,6 @@ const HeaderTwo = ({ style_2 = false }) => {
           </div>
         </div>
       </header>
-
-      {/* cart mini sidebar start */}
-      <CartMiniSidebar />
-      {/* cart mini sidebar end */}
-
-      {/* off canvas start */}
-      <OffCanvas isOffCanvasOpen={isOffCanvasOpen} setIsCanvasOpen={setIsCanvasOpen} categoryType="fashion" />
-      {/* off canvas end */}
     </>
   );
 };

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Slider from 'react-slick';
 // internal
-import slider_img_1 from '@assets/img/slider/4/slider-1.png';
-import slider_img_2 from '@assets/img/slider/4/slider-2.png';
-import slider_img_3 from '@assets/img/slider/4/slider-3.png';
-import slider_img_4 from '@assets/img/slider/4/slider-4.png';
+// import slider_img_1 from '@assets/img/slider/4/slider-1.png';
+// import slider_img_2 from '@assets/img/slider/4/slider-2.png';
+// import slider_img_3 from '@assets/img/slider/4/slider-3.png';
+// import slider_img_4 from '@assets/img/slider/4/slider-4.png';
 // nav icon
 import nav_icon_1 from '@assets/img/slider/4/nav/icon-1.png';
 import nav_icon_2 from '@assets/img/slider/4/nav/icon-2.png';
@@ -17,19 +17,19 @@ import Link from 'next/link';
 
 // slider data 
 const slider_data = [
-  { subtitle: 'The original', title: 'Shine bright', img: slider_img_1 },
-  { subtitle: 'The original', title: 'Creative Design', img: slider_img_2 },
-  { subtitle: 'The original', title: 'Gold Plated', img: slider_img_3 },
-  { subtitle: 'The original', title: 'Unique shapes', img: slider_img_4 },
+  { subtitle: 'The original', title: 'Shine bright' },
+  { subtitle: 'The original', title: 'Creative Design' },
+  { subtitle: 'The original', title: 'Gold Plated' },
+  { subtitle: 'The original', title: 'Unique shapes',},
 ];
 
 // slider nav data
-const slider_nav_data = [
-  { icon: nav_icon_1, title: <>Ring <br />& Earring</> },
-  { icon: nav_icon_2, title: <>Bangles & <br />Bracelets</> },
-  { icon: nav_icon_3, title: <>Drop <br /> Necklaces</> },
-  { icon: nav_icon_4, title: <>Diamond <br /> Necklaces</> },
-];
+// const slider_nav_data = [
+//   { icon: nav_icon_1, title: <>Ring <br />& Earring</> },
+//   { icon: nav_icon_2, title: <>Bangles & <br />Bracelets</> },
+//   { icon: nav_icon_3, title: <>Drop <br /> Necklaces</> },
+//   { icon: nav_icon_4, title: <>Diamond <br /> Necklaces</> },
+// ];
 
 const JewelryBanner = () => {
   const [slider1, setSlider1] = useState(null);
@@ -79,7 +79,6 @@ const JewelryBanner = () => {
         {slider_data.map((item, i) => (
           <div key={i} className="tp-slider-item-4 tp-slider-height-4 p-relative khaki-bg d-flex align-items-center">
             <div className="tp-slider-thumb-4">
-              <Image src={item.img} alt="slider img" />
               <div className="tp-slider-thumb-4-shape">
                 <span className="tp-slider-thumb-4-shape-1"></span>
                 <span className="tp-slider-thumb-4-shape-2"></span>
@@ -135,7 +134,7 @@ const JewelryBanner = () => {
       </div>
 
       {/* Navigation Thumbnail Slider */}
-      <div className="tp-slider-nav">
+      {/* <div className="tp-slider-nav">
         <Slider {...nav_slider_setting} asNavFor={slider1} ref={(slider) => setSlider2(slider)} className="tp-slider-nav-active">
           {slider_nav_data.map((item, i) => (
             <div key={i} className="tp-slider-nav-item d-flex align-items-center">
@@ -150,7 +149,7 @@ const JewelryBanner = () => {
             </div>
           ))}
         </Slider>
-      </div>
+      </div> */}
     </section>
   );
 };

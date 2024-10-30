@@ -1,158 +1,209 @@
-import React, { useState } from "react";
-import { FaCloudUploadAlt, FaImages } from "react-icons/fa"; // Importing icons
-import axios from "axios"; // Ensure you have axios installed
+import React, { useState, useEffect } from 'react';
 
-const ImageUploadPage = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [uploadMessage, setUploadMessage] = useState("");
+const ImageUpload = () => {
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [previewURL, setPreviewURL] = useState('');
+    const [images, setImages] = useState([]);
+    const [isDragOver, setIsDragOver] = useState(false);
+    const username = localStorage.getItem('username');
 
-  const handleFileSelect = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    setPreview(URL.createObjectURL(file));
-  };
+    // useEffect(() => {
+    //     if (!username) {
+    //         alert('User not logged in');
+    //         window.location.href = '/login';
+    //     }
+    // }, [username]);
 
-  const handleUpload = async () => {
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("image", selectedFile);
+    const handleFile = (file) => {
+        const objectURL = URL.createObjectURL(file);
+        setSelectedFile(file);
+        setPreviewURL(objectURL);
+    };
 
-      try {
-        const response = await axios.post("/imgup", formData); // Adjust the URL according to your server setup
-        setUploadMessage(response.data.message);
-      } catch (error) {
-        setUploadMessage("Upload failed: " + error.response.data.message);
-      }
-    } else {
-      alert("Please select a file first.");
-    }
-  };
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsDragOver(true);
+    };
 
-  return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>Upload Your Image</h2>
-      <div
-        style={styles.dropZone}
-        onClick={() => document.getElementById("fileInput").click()}
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => {
-          e.preventDefault();
-          const file = e.dataTransfer.files[0];
-          setSelectedFile(file);
-          setPreview(URL.createObjectURL(file));
-        }}
-      >
-        <input
-          id="fileInput"
-          type="file"
-          style={styles.fileInput}
-          onChange={handleFileSelect}
-          accept="image/*"
-        />
-        <FaCloudUploadAlt style={styles.icon} />
-        <p style={styles.dropZoneText}>Drag & Drop Image Here or Click to Select</p>
-      </div>
-      {preview && (
-        <div style={styles.previewContainer}>
-          <img src={preview} alt="Preview" style={styles.previewImage} />
+    const handleDragLeave = () => {
+        setIsDragOver(false);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragOver(false);
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            handleFile(file);
+        }
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            handleFile(file);
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!selectedFile) {
+            alert("Please select an image first.");
+            return;
+        }
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+        formData.append('username', username);
+        try {
+            const response = await fetch('http://localhost:3001/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await response.text();
+            alert(data);
+
+            // Reset preview
+            setSelectedFile(null);
+            setPreviewURL('');
+        } catch (error) {
+            alert('Error uploading image');
+        }
+    };
+
+    const retrieveImages = async () => {
+        try {
+            const response = await fetch(`http://localhost:3001/images/${username}`);
+            const images = await response.json();
+            setImages(images);
+        } catch (error) {
+            alert('Error retrieving images');
+        }
+    };
+
+    return (
+        <div className="image-upload-container" style={containerStyle}>
+            <h2>Upload Image</h2>
+            <form onSubmit={handleSubmit}>
+                {/* Conditionally render drag-drop area or preview */}
+                {!previewURL ? (
+                    <div
+                        className={`drag-drop-area ${isDragOver ? 'dragover' : ''}`}
+                        style={dragDropAreaStyle}
+                        onClick={() => document.getElementById('fileInput').click()}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                    >
+                        Drag & Drop an image here or click to select
+                    </div>
+                ) : (
+                    <div className="preview-container" style={previewContainerStyle}>
+                        <img src={previewURL} alt="Image Preview" style={previewImageStyle} />
+                    </div>
+                )}
+                
+                <input
+                    type="file"
+                    id="fileInput"
+                    style={{ display: 'none' }}
+                    onChange={handleFileChange}
+                />
+                <button type="submit" className="upload-button" style={uploadButtonStyle}>
+                    Upload Image
+                </button>
+            </form>
+            <button onClick={retrieveImages} style={retrieveButtonStyle}>Retrieve Images</button>
+            <div className="image-list" style={imageListStyle}>
+                {images.map((img, index) => (
+                    <img
+                        key={index}
+                        src={`data:${img.contentType};base64,${img.data}`}
+                        alt="Uploaded"
+                        style={uploadedImageStyle}
+                    />
+                ))}
+            </div>
         </div>
-      )}
-      {uploadMessage && <p>{uploadMessage}</p>}
-      <div style={styles.buttonContainer}>
-        <button style={styles.uploadButton} onClick={handleUpload}>
-          <FaCloudUploadAlt style={styles.buttonIcon} /> Upload Image
-        </button>
-      </div>
-    </div>
-  );
+    );
 };
 
-const styles = {
-  container: {
-    width: "100%",
-    maxWidth: "600px",
-    margin: "40px auto",
-    padding: "20px",
-    backgroundColor: "#f4f4f9",
-    borderRadius: "8px",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-    fontFamily: "'Arial', sans-serif",
-  },
-  title: {
-    color: "#333",
-    fontSize: "26px",
-    fontWeight: "700",
-    lineHeight: "1.5",
-    marginBottom: "20px",
-    textAlign: "center",
-  },
-  dropZone: {
-    border: "2px dashed #4A90E2",
-    padding: "40px",
-    borderRadius: "8px",
-    backgroundColor: "#fff",
-    cursor: "pointer",
-    color: "#333",
-    marginBottom: "16px",
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    transition: "all 0.3s ease",
-  },
-  dropZoneText: {
-    marginTop: "10px",
-    fontSize: "16px",
-    color: "#666",
-  },
-  icon: {
-    fontSize: "40px",
-    color: "#4A90E2",
-  },
-  fileInput: {
-    display: "none",
-  },
-  previewContainer: {
-    marginTop: "16px",
-    marginBottom: "16px",
-  },
-  previewImage: {
-    maxWidth: "100%",
-    maxHeight: "200px",
-    borderRadius: "6px",
-    border: "1px solid #ddd",
-    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.15)",
-  },
-  buttonContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "10px",
-  },
-  uploadButton: {
-    backgroundColor: "#4A90E2",
-    color: "#fff",
-    border: "none",
-    padding: "12px 24px",
-    borderRadius: "6px",
-    cursor: "pointer",
-    fontSize: "16px",
-    fontWeight: "500",
-    transition: "background-color 0.3s ease",
-    width: "100%",
-    maxWidth: "300px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "8px",
-  },
-  buttonIcon: {
-    fontSize: "18px",
-  },
+// Inline styles
+const containerStyle = {
+    backgroundColor: '#fff',
+    padding: '20px',
+    borderRadius: '10px',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+    maxWidth: '600px',
+    margin: '0 auto',
 };
 
-// Hover effects
-styles.uploadButton[':hover'] = { backgroundColor: "#357ABD" };
+const dragDropAreaStyle = {
+    border: '2px dashed #bbb',
+    borderRadius: '5px',
+    padding: '40px',
+    textAlign: 'center',
+    color: '#bbb',
+    fontSize: '16px',
+    cursor: 'pointer',
+};
 
-export default ImageUploadPage;
+const previewContainerStyle = {
+    width: '100%',
+    height: '400px',
+    border: '2px solid #ddd',
+    borderRadius: '5px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '20px',
+};
+
+const previewImageStyle = {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+};
+
+const uploadButtonStyle = {
+    display: 'block',
+    width: '100%',
+    padding: '15px',
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    fontSize: '20px',
+    cursor: 'pointer',
+    marginTop: '20px',
+    textAlign: 'center',
+};
+
+const retrieveButtonStyle = {
+    display: 'block',
+    width: '100%',
+    padding: '15px',
+    backgroundColor: '#008CBA',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    fontSize: '16px',
+    cursor: 'pointer',
+    marginTop: '10px',
+    textAlign: 'center',
+};
+
+const imageListStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: '20px',
+};
+
+const uploadedImageStyle = {
+    maxWidth: '200px',
+    margin: '10px',
+    border: '2px solid #ddd',
+    borderRadius: '5px',
+};
+
+export default ImageUpload;
