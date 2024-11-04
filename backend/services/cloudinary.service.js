@@ -14,7 +14,7 @@ const { Readable } = require('stream');
 const cloudinaryImageUpload = (imageBuffer) => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
-      { upload_preset: secret.cloudinary_upload_preset },
+      { upload_preset: "new_uploadpresent"},
       (error, result) => {
         if (error) {
           console.error('Error uploading to Cloudinary:', error);

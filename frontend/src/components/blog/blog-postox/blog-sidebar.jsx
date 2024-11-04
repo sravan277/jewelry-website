@@ -5,10 +5,10 @@ import Image from 'next/image';
 import user from '@assets/img/users/user-11.jpg';
 import signature from '@assets/img/blog/signature/signature.png';
 import { Search } from '@/svg';
-import blogData from '@/data/blog-data';
+// import blogData from '@/data/blog-data';
 
 // latest post
-const latest_post = blogData.slice(0,3)
+// const latest_post = blogData.slice(0,3)
 
 const BlogSidebar = () => {
   return (
@@ -56,7 +56,7 @@ const BlogSidebar = () => {
         <div className="tp-sidebar-widget mb-35">
           <h3 className="tp-sidebar-widget-title">Latest Posts</h3>
           <div className="tp-sidebar-widget-content">
-            <div className="tp-sidebar-blog-item-wrapper">
+            {/* <div className="tp-sidebar-blog-item-wrapper">
               {latest_post.map(b => (
               <div key={b.id} className="tp-sidebar-blog-item d-flex align-items-center">
                 <div className="tp-sidebar-blog-thumb">
@@ -74,7 +74,7 @@ const BlogSidebar = () => {
                 </div>
               </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
         {/* <!-- latest post end --> */}

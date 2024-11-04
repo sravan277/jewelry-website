@@ -18,9 +18,9 @@ import Link from 'next/link';
 // slider data 
 const slider_data = [
   { subtitle: 'The original', title: 'Shine bright' },
-  { subtitle: 'The original', title: 'Creative Design' },
-  { subtitle: 'The original', title: 'Gold Plated' },
-  { subtitle: 'The original', title: 'Unique shapes',},
+  { subtitle: 'The original', title: 'Creative Design'},
+  { subtitle: 'The original', title: 'Gold Plated'},
+  { subtitle: 'The original', title: 'Unique shapes'},
 ];
 
 // slider nav data
@@ -79,6 +79,7 @@ const JewelryBanner = () => {
         {slider_data.map((item, i) => (
           <div key={i} className="tp-slider-item-4 tp-slider-height-4 p-relative khaki-bg d-flex align-items-center">
             <div className="tp-slider-thumb-4">
+              {/* <Image src={item.img} alt="slider img" /> */}
               <div className="tp-slider-thumb-4-shape">
                 <span className="tp-slider-thumb-4-shape-1"></span>
                 <span className="tp-slider-thumb-4-shape-2"></span>

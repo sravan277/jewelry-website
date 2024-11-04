@@ -29,7 +29,7 @@ const JewelryAbout = () => {
                   <h3 className="tp-section-title-4 fz-50"> You can upload images here</h3>
                 </div>
                 <div className="tp-about-content pl-120">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br /> Cras vel mi quam. Fusce vehicula vitae mauris sit amet tempor. Donec consectetur lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+                  <p> Generate Jewelry Images , Convert Sketch Images to Color Images of Jewelry </p>
 
                   <div className="tp-about-btn">
                     <Link href="/contact" className="tp-btn">

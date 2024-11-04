@@ -32,11 +32,11 @@ const HeaderTwo = ({ style_2 = false }) => {
               <div className="tp-mega-menu-wrapper p-relative">
                 <div className="row align-items-center">
                   <div className="col-xl-2 col-lg-5 col-md-5 col-sm-4 col-6">
-                    <div className="logo">
+                    {/* <div className="logo">
                       <Link href="/">
                         <Image src={logo} alt="logo" priority />
                       </Link>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="col-xl-5 d-none d-xl-block">
                     <div className="main-menu menu-style-2">
