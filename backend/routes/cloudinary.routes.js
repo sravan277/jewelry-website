@@ -6,6 +6,9 @@ const multer = require('multer');
 
 const upload = multer();
 
+// Get all images
+router.get('/get-all-img', cloudinaryController.getAllImages);
+
 // Add image
 router.post('/add-img', upload.single('image'), cloudinaryController.saveImageCloudinary);
 
@@ -16,8 +19,7 @@ router.post('/add-multiple-img', upload.array('images', 5), cloudinaryController
 router.delete('/img-delete', cloudinaryController.cloudinaryDeleteController);
 
 // Get image by ID from Cloudinary
-router.get('/get-img/:id', cloudinaryController.getImage); // Add this line
-
-router.get('/get-all-img', cloudinaryController.getAllImages);
+router.get('/get-img/:id', cloudinaryController.getImage);
 
 module.exports = router;
+
