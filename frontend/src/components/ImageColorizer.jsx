@@ -22,10 +22,12 @@ const ImageColorizer = () => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', selectedImage);
+    // const formData = new FormData();
+    // formData.append('file', selectedImage);
 
     try {
+      const formData = new FormData();
+      formData.append('file', selectedImage);
       const response = await fetch('http://127.0.0.1:4000/api/upload', {
         method: 'POST',
         body: formData,
@@ -45,7 +47,7 @@ const ImageColorizer = () => {
   };
 
   return (
-    <div className="container mt-5">
+<div className="container mt-5">
       <h1 className="text-center mb-4">Image Colorizer</h1>
       <div className="row justify-content-center">
         <div className="col-md-6 text-center">

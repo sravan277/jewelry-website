@@ -1,51 +1,60 @@
-import os
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from PIL import Image
-from io import BytesIO
+import io
+import cv2
 import numpy as np
 import tensorflow as tf
+import tensorflow as tf
 
-# Suppress TensorFlow warnings
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress INFO and WARNING messages
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'  # Disable oneDNN custom operations
 
+# Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Load your model (update the path to your model)
-model = tf.keras.models.load_model("C:/Users/palak/OneDrive/Desktop/Jupyter Notebook/pix2pix_generator3.h5")
+# Load the generator model
+generator = tf.keras.models.load_model("C:/Users/palak/OneDrive/Desktop/Jupyter Notebook/generator_epoch_26.keras")
 
-def process_image(image):
-    # Resize and preprocess the image as required by the model
-    image = image.resize((256, 256))  # Adjust the size to match model's input
-    img_array = np.array(image) / 255.0  # Normalize if required
-    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
-    generated_img_array = model.predict(img_array)[0]  # Model's output
+# generator = tf.keras.models.load_model("C:/Users/NEW/Downloads/generator_epoch_26.keras")
 
-    # Convert output to an image format
-    generated_img_array = (generated_img_array * 255).astype(np.uint8)  # Adjust for RGB
-    return Image.fromarray(generated_img_array)
 
-@app.route('/api/generate-image', methods=['POST'])
-def generate_image():
-    if 'image' not in request.files:
-        return jsonify({"error": "No image file provided"}), 400
+def load_image_for_prediction(image_bytes):
+    # Read image from bytes
+    image = Image.open(io.BytesIO(image_bytes))
+    image = image.convert('RGB')  # Convert to RGB if not already
+    image = np.array(image)
+    image = cv2.resize(image, (256, 256))
+    image = (image / 127.5) - 1  # Normalize to [-1, 1]
+    return np.expand_dims(image, axis=0).astype(np.float32)
 
-    # Read image from the request
-    file = request.files['image']
-    input_image = Image.open(file)
+def process_image_with_model(image_array):
+    # Predict using the model
+    predicted_image = generator(image_array, training=False)
+    return (predicted_image[0] + 1) / 2  # Rescale to [0, 1] for display
 
-    # Process the image with the model
-    generated_image = process_image(input_image)
+@app.route('/api/upload', methods=['POST'])
+def process_image():
+    # Check if the request contains a file
+    if 'file' not in request.files:
+        return jsonify({"error": "No file provided"}), 400
 
-    # Save to an in-memory buffer to send as response
-    buffer = BytesIO()
-    generated_image.save(buffer, format="PNG")
-    buffer.seek(0)
+    file = request.files['file']
+    image_bytes = file.read()
 
-    # Return the generated image
-    return send_file(buffer, mimetype='image/png')
+    # Load and process the image
+    sketch_image = load_image_for_prediction(image_bytes)
+    predicted_image = process_image_with_model(sketch_image)
+
+    # Convert processed image to PIL format and send it back as a response
+    predicted_image = (predicted_image * 255).numpy().astype(np.uint8)
+    predicted_image_pil = Image.fromarray(predicted_image)
+    
+    # Save image to bytes
+    img_byte_arr = io.BytesIO()
+    predicted_image_pil.save(img_byte_arr, format='PNG')
+    img_byte_arr.seek(0)
+
+    return send_file(img_byte_arr, mimetype='image/png')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0',port=4000)
